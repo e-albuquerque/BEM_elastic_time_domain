@@ -176,7 +176,7 @@ time_function = np.array([[0., 1.],[1.E10, 1.]]) # Heaviside (step) function
 plt.plot(time_function[:,0],time_function[:,1])
 plt.xlabel('t')
 plt.ylabel('f(t)')
-plt.show()
+# plt.show()
 
 
 
@@ -216,7 +216,7 @@ mid_node_number, mid_element_idx = get_midnode_edge(computed_data, edge)
 print(f"Mid node number for '{edge}' edge: {mid_node_number}")
 print(f"Mid element number for '{edge}' edge: {mid_element_idx}")
 
-def create_input_file(filename, computed_data, input_params,time_function):
+def create_input_file(filename, computed_data, input_params,time_function, mid_node_number):
     """
     Creates an input file for the Fortran BEM program (quadplet) in the time domain
     based on computed mesh data and boundary conditions.
@@ -295,8 +295,9 @@ def create_input_file(filename, computed_data, input_params,time_function):
             for n in range(3):
                 line_parts.append(f"{tp_x},{vl_x:.4E},{tf_x} {tp_y},{vl_y:.4E},{tf_y}")
             f.write(f" {'  '.join(line_parts)}\n")
+        f.write(f" {mid_node_number}\n")
 
 # Call the function to generate str12.dat
-create_input_file(inp_data_filename, computed_data, global_input_data, time_function)
+create_input_file(inp_data_filename, computed_data, global_input_data, time_function, mid_node_number)
 
 
